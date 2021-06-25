@@ -7,14 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3610DBAD26820B4B0030253B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBAC26820B4B0030253B /* AppDelegate.swift */; };
-		3610DBAF26820B4B0030253B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBAE26820B4B0030253B /* SceneDelegate.swift */; };
-		3610DBB126820B4B0030253B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBB026820B4B0030253B /* ViewController.swift */; };
-		3610DBB426820B4B0030253B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBB226820B4B0030253B /* Main.storyboard */; };
-		3610DBB626820B4C0030253B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBB526820B4C0030253B /* Assets.xcassets */; };
-		3610DBB926820B4C0030253B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBB726820B4C0030253B /* LaunchScreen.storyboard */; };
 		3610DBC426820B4C0030253B /* TFYSwiftEmptyDataSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBC326820B4C0030253B /* TFYSwiftEmptyDataSetTests.swift */; };
 		3610DBCE26820B4C0030253B /* TFYSwiftEmptyDataSetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBCD26820B4C0030253B /* TFYSwiftEmptyDataSetUITests.swift */; };
+		3610DBE826820C110030253B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBDE26820C110030253B /* AppDelegate.swift */; };
+		3610DBE926820C110030253B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBDF26820C110030253B /* SceneDelegate.swift */; };
+		3610DBEA26820C110030253B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBE126820C110030253B /* Assets.xcassets */; };
+		3610DBEB26820C110030253B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBE226820C110030253B /* LaunchScreen.storyboard */; };
+		3610DBEF26820D950030253B /* TFYSwiftEmptyDataSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBEE26820D950030253B /* TFYSwiftEmptyDataSetView.swift */; };
+		3610DBF12682165C0030253B /* TFYSwiftProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBF02682165C0030253B /* TFYSwiftProtocol.swift */; };
+		3610DBF326821AAC0030253B /* UIScrollView+EmptyDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DBF226821AAC0030253B /* UIScrollView+EmptyDataSet.swift */; };
+		3610DBF926821F700030253B /* IdealSans-Book-Pro.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBF626821F700030253B /* IdealSans-Book-Pro.otf */; };
+		3610DBFA26821F700030253B /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBF826821F700030253B /* Lato-Regular.ttf */; };
+		3610DBFC26821FB70030253B /* applications.json in Resources */ = {isa = PBXBuildFile; fileRef = 3610DBFB26821FB70030253B /* applications.json */; };
+		3610DC0C268220A70030253B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3610DC00268220A70030253B /* UIColor+Extension.swift */; };
+		366D62482683649B007C811B /* TFYSwiftTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D62472683649B007C811B /* TFYSwiftTableView.swift */; };
+		366D624C26836664007C811B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D624B26836664007C811B /* ViewController.swift */; };
+		366D624E26836672007C811B /* TFYSwiftEmptyOneController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D624D26836672007C811B /* TFYSwiftEmptyOneController.swift */; };
+		366D62502683668A007C811B /* TFYSwiftEmptyTwoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D624F2683668A007C811B /* TFYSwiftEmptyTwoController.swift */; };
+		366D6252268366C6007C811B /* TFYSwiftEmptyThreeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D6251268366C6007C811B /* TFYSwiftEmptyThreeController.swift */; };
+		366D6254268366EE007C811B /* TFYSwiftEmptyFourController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D6253268366EE007C811B /* TFYSwiftEmptyFourController.swift */; };
+		366D625626836706007C811B /* TFYSwiftEmptyFiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D625526836706007C811B /* TFYSwiftEmptyFiveController.swift */; };
+		366D62582683671B007C811B /* TFYSwiftEmptySixController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D62572683671B007C811B /* TFYSwiftEmptySixController.swift */; };
+		366D625A2683673E007C811B /* TFYSwiftEmptySevenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D62592683673E007C811B /* TFYSwiftEmptySevenController.swift */; };
+		366D625C26836774007C811B /* TFYSwiftEmptyEightController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D625B26836774007C811B /* TFYSwiftEmptyEightController.swift */; };
+		366D625E26836786007C811B /* TFYSwiftBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366D625D26836786007C811B /* TFYSwiftBaseController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,17 +52,33 @@
 
 /* Begin PBXFileReference section */
 		3610DBA926820B4B0030253B /* TFYSwiftEmptyDataSet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TFYSwiftEmptyDataSet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		3610DBAC26820B4B0030253B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3610DBAE26820B4B0030253B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3610DBB026820B4B0030253B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		3610DBB326820B4B0030253B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		3610DBB526820B4C0030253B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		3610DBB826820B4C0030253B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		3610DBBA26820B4C0030253B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3610DBBF26820B4C0030253B /* TFYSwiftEmptyDataSetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TFYSwiftEmptyDataSetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3610DBC326820B4C0030253B /* TFYSwiftEmptyDataSetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyDataSetTests.swift; sourceTree = "<group>"; };
 		3610DBC926820B4C0030253B /* TFYSwiftEmptyDataSetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TFYSwiftEmptyDataSetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3610DBCD26820B4C0030253B /* TFYSwiftEmptyDataSetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyDataSetUITests.swift; sourceTree = "<group>"; };
+		3610DBDE26820C110030253B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3610DBDF26820C110030253B /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		3610DBE126820C110030253B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3610DBE326820C110030253B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		3610DBE626820C110030253B /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3610DBEE26820D950030253B /* TFYSwiftEmptyDataSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyDataSetView.swift; sourceTree = "<group>"; };
+		3610DBF02682165C0030253B /* TFYSwiftProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftProtocol.swift; sourceTree = "<group>"; };
+		3610DBF226821AAC0030253B /* UIScrollView+EmptyDataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+EmptyDataSet.swift"; sourceTree = "<group>"; };
+		3610DBF626821F700030253B /* IdealSans-Book-Pro.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "IdealSans-Book-Pro.otf"; sourceTree = "<group>"; };
+		3610DBF826821F700030253B /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		3610DBFB26821FB70030253B /* applications.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = applications.json; sourceTree = "<group>"; };
+		3610DC00268220A70030253B /* UIColor+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		366D62472683649B007C811B /* TFYSwiftTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftTableView.swift; sourceTree = "<group>"; };
+		366D624B26836664007C811B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		366D624D26836672007C811B /* TFYSwiftEmptyOneController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyOneController.swift; sourceTree = "<group>"; };
+		366D624F2683668A007C811B /* TFYSwiftEmptyTwoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyTwoController.swift; sourceTree = "<group>"; };
+		366D6251268366C6007C811B /* TFYSwiftEmptyThreeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyThreeController.swift; sourceTree = "<group>"; };
+		366D6253268366EE007C811B /* TFYSwiftEmptyFourController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyFourController.swift; sourceTree = "<group>"; };
+		366D625526836706007C811B /* TFYSwiftEmptyFiveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyFiveController.swift; sourceTree = "<group>"; };
+		366D62572683671B007C811B /* TFYSwiftEmptySixController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptySixController.swift; sourceTree = "<group>"; };
+		366D62592683673E007C811B /* TFYSwiftEmptySevenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptySevenController.swift; sourceTree = "<group>"; };
+		366D625B26836774007C811B /* TFYSwiftEmptyEightController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyEightController.swift; sourceTree = "<group>"; };
+		366D625D26836786007C811B /* TFYSwiftBaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftBaseController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,13 +129,10 @@
 		3610DBAB26820B4B0030253B /* TFYSwiftEmptyDataSet */ = {
 			isa = PBXGroup;
 			children = (
-				3610DBAC26820B4B0030253B /* AppDelegate.swift */,
-				3610DBAE26820B4B0030253B /* SceneDelegate.swift */,
-				3610DBB026820B4B0030253B /* ViewController.swift */,
-				3610DBB226820B4B0030253B /* Main.storyboard */,
-				3610DBB526820B4C0030253B /* Assets.xcassets */,
-				3610DBB726820B4C0030253B /* LaunchScreen.storyboard */,
-				3610DBBA26820B4C0030253B /* Info.plist */,
+				3610DBDD26820C110030253B /* AppDelegate */,
+				3610DBDA26820C110030253B /* Class */,
+				3610DBE026820C110030253B /* Resources */,
+				3610DBDC26820C110030253B /* TFYSwiftEmptyDataSetKit */,
 			);
 			path = TFYSwiftEmptyDataSet;
 			sourceTree = "<group>";
@@ -122,6 +151,97 @@
 				3610DBCD26820B4C0030253B /* TFYSwiftEmptyDataSetUITests.swift */,
 			);
 			path = TFYSwiftEmptyDataSetUITests;
+			sourceTree = "<group>";
+		};
+		3610DBDA26820C110030253B /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				3610DC06268220A70030253B /* Model */,
+				3610DBFF268220A70030253B /* Vc */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		3610DBDC26820C110030253B /* TFYSwiftEmptyDataSetKit */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBEE26820D950030253B /* TFYSwiftEmptyDataSetView.swift */,
+				3610DBF02682165C0030253B /* TFYSwiftProtocol.swift */,
+				3610DBF226821AAC0030253B /* UIScrollView+EmptyDataSet.swift */,
+			);
+			path = TFYSwiftEmptyDataSetKit;
+			sourceTree = "<group>";
+		};
+		3610DBDD26820C110030253B /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBDE26820C110030253B /* AppDelegate.swift */,
+				3610DBDF26820C110030253B /* SceneDelegate.swift */,
+			);
+			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		3610DBE026820C110030253B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBFB26821FB70030253B /* applications.json */,
+				3610DBF426821F700030253B /* Fonts */,
+				3610DBE126820C110030253B /* Assets.xcassets */,
+				3610DBE226820C110030253B /* LaunchScreen.storyboard */,
+				3610DBE626820C110030253B /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		3610DBF426821F700030253B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBF526821F700030253B /* Ideal Sans */,
+				3610DBF726821F700030253B /* Lato */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		3610DBF526821F700030253B /* Ideal Sans */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBF626821F700030253B /* IdealSans-Book-Pro.otf */,
+			);
+			path = "Ideal Sans";
+			sourceTree = "<group>";
+		};
+		3610DBF726821F700030253B /* Lato */ = {
+			isa = PBXGroup;
+			children = (
+				3610DBF826821F700030253B /* Lato-Regular.ttf */,
+			);
+			path = Lato;
+			sourceTree = "<group>";
+		};
+		3610DBFF268220A70030253B /* Vc */ = {
+			isa = PBXGroup;
+			children = (
+				366D624B26836664007C811B /* ViewController.swift */,
+				3610DC00268220A70030253B /* UIColor+Extension.swift */,
+				366D624D26836672007C811B /* TFYSwiftEmptyOneController.swift */,
+				366D624F2683668A007C811B /* TFYSwiftEmptyTwoController.swift */,
+				366D6251268366C6007C811B /* TFYSwiftEmptyThreeController.swift */,
+				366D6253268366EE007C811B /* TFYSwiftEmptyFourController.swift */,
+				366D625526836706007C811B /* TFYSwiftEmptyFiveController.swift */,
+				366D62572683671B007C811B /* TFYSwiftEmptySixController.swift */,
+				366D62592683673E007C811B /* TFYSwiftEmptySevenController.swift */,
+				366D625B26836774007C811B /* TFYSwiftEmptyEightController.swift */,
+				366D625D26836786007C811B /* TFYSwiftBaseController.swift */,
+			);
+			path = Vc;
+			sourceTree = "<group>";
+		};
+		3610DC06268220A70030253B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				366D62472683649B007C811B /* TFYSwiftTableView.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +307,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				CLASSPREFIX = TFYSwift;
 				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
@@ -228,9 +349,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3610DBB926820B4C0030253B /* LaunchScreen.storyboard in Resources */,
-				3610DBB626820B4C0030253B /* Assets.xcassets in Resources */,
-				3610DBB426820B4B0030253B /* Main.storyboard in Resources */,
+				3610DBEA26820C110030253B /* Assets.xcassets in Resources */,
+				3610DBFA26821F700030253B /* Lato-Regular.ttf in Resources */,
+				3610DBEB26820C110030253B /* LaunchScreen.storyboard in Resources */,
+				3610DBFC26821FB70030253B /* applications.json in Resources */,
+				3610DBF926821F700030253B /* IdealSans-Book-Pro.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,9 +378,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3610DBB126820B4B0030253B /* ViewController.swift in Sources */,
-				3610DBAD26820B4B0030253B /* AppDelegate.swift in Sources */,
-				3610DBAF26820B4B0030253B /* SceneDelegate.swift in Sources */,
+				366D62582683671B007C811B /* TFYSwiftEmptySixController.swift in Sources */,
+				366D62502683668A007C811B /* TFYSwiftEmptyTwoController.swift in Sources */,
+				366D6252268366C6007C811B /* TFYSwiftEmptyThreeController.swift in Sources */,
+				3610DC0C268220A70030253B /* UIColor+Extension.swift in Sources */,
+				3610DBEF26820D950030253B /* TFYSwiftEmptyDataSetView.swift in Sources */,
+				366D625C26836774007C811B /* TFYSwiftEmptyEightController.swift in Sources */,
+				3610DBE826820C110030253B /* AppDelegate.swift in Sources */,
+				3610DBF12682165C0030253B /* TFYSwiftProtocol.swift in Sources */,
+				366D624E26836672007C811B /* TFYSwiftEmptyOneController.swift in Sources */,
+				3610DBF326821AAC0030253B /* UIScrollView+EmptyDataSet.swift in Sources */,
+				366D625626836706007C811B /* TFYSwiftEmptyFiveController.swift in Sources */,
+				366D62482683649B007C811B /* TFYSwiftTableView.swift in Sources */,
+				366D6254268366EE007C811B /* TFYSwiftEmptyFourController.swift in Sources */,
+				366D624C26836664007C811B /* ViewController.swift in Sources */,
+				3610DBE926820C110030253B /* SceneDelegate.swift in Sources */,
+				366D625A2683673E007C811B /* TFYSwiftEmptySevenController.swift in Sources */,
+				366D625E26836786007C811B /* TFYSwiftBaseController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,18 +430,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		3610DBB226820B4B0030253B /* Main.storyboard */ = {
+		3610DBE226820C110030253B /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				3610DBB326820B4B0030253B /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		3610DBB726820B4C0030253B /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				3610DBB826820B4C0030253B /* Base */,
+				3610DBE326820C110030253B /* Base */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -437,12 +566,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QH95759TSS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TFYSwiftEmptyDataSet/Info.plist;
+				INFOPLIST_FILE = TFYSwiftEmptyDataSet/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "空置图";
+				INFOPLIST_KEY_CFBundleExecutable = TFYSwiftEmptyDataSet;
+				INFOPLIST_KEY_CFBundleName = TFYSwiftEmptyDataSet;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -465,12 +598,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = QH95759TSS;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TFYSwiftEmptyDataSet/Info.plist;
+				INFOPLIST_FILE = TFYSwiftEmptyDataSet/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "空置图";
+				INFOPLIST_KEY_CFBundleExecutable = TFYSwiftEmptyDataSet;
+				INFOPLIST_KEY_CFBundleName = TFYSwiftEmptyDataSet;
+				INFOPLIST_KEY_CFBundleVersion = 1;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
