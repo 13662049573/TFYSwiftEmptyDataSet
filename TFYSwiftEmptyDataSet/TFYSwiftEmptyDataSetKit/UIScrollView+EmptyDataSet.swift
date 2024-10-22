@@ -22,14 +22,14 @@ private var kEmptyDataSetDelegate =         "emptyDataSetDelegate"
 private var kEmptyDataSetView =             "emptyDataSetView"
 private var kConfigureEmptyDataSetView =    "configureEmptyDataSetView"
 
-extension UIScrollView: UIGestureRecognizerDelegate {
+extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
     
     private var configureEmptyDataSetView: ((TFYSwiftEmptyDataSetView) -> Void)? {
         get {
-            return objc_getAssociatedObject(self, &kConfigureEmptyDataSetView) as? (TFYSwiftEmptyDataSetView) -> Void
+            return objc_getAssociatedObject(self, (kConfigureEmptyDataSetView)) as? (TFYSwiftEmptyDataSetView) -> Void
         }
         set {
-            objc_setAssociatedObject(self, &kConfigureEmptyDataSetView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, (kConfigureEmptyDataSetView), newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             UIScrollView.swizzleReloadData
             if self is UITableView {
                 UIScrollView.swizzleEndUpdates
@@ -40,14 +40,14 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     //MARK: - Public Property
     public var emptyDataSetSource: EmptyDataSetSource? {
         get {
-            let container = objc_getAssociatedObject(self, &kEmptyDataSetSource) as? WeakObjectContainer
+            let container = objc_getAssociatedObject(self, (kEmptyDataSetSource)) as? WeakObjectContainer
             return container?.weakObject as? EmptyDataSetSource
         }
         set {
             if newValue == nil {
                 self.invalidate()
             }
-            objc_setAssociatedObject(self, &kEmptyDataSetSource, WeakObjectContainer(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, (kEmptyDataSetSource), WeakObjectContainer(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             UIScrollView.swizzleReloadData
             if self is UITableView {
                 UIScrollView.swizzleEndUpdates
@@ -57,19 +57,19 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     
     public var emptyDataSetDelegate: EmptyDataSetDelegate? {
         get {
-            let container = objc_getAssociatedObject(self, &kEmptyDataSetDelegate) as? WeakObjectContainer
+            let container = objc_getAssociatedObject(self, (kEmptyDataSetDelegate)) as? WeakObjectContainer
             return container?.weakObject as? EmptyDataSetDelegate
         }
         set {
             if newValue == nil {
                 self.invalidate()
             }
-            objc_setAssociatedObject(self, &kEmptyDataSetDelegate, WeakObjectContainer(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+            objc_setAssociatedObject(self, (kEmptyDataSetDelegate), WeakObjectContainer(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
     public var isEmptyDataSetVisible: Bool {
-        if let view = objc_getAssociatedObject(self, &kEmptyDataSetView) as? TFYSwiftEmptyDataSetView {
+        if let view = objc_getAssociatedObject(self, (kEmptyDataSetView)) as? TFYSwiftEmptyDataSetView {
             return !view.isHidden
         }
         return false
@@ -82,7 +82,7 @@ extension UIScrollView: UIGestureRecognizerDelegate {
     
     private var emptyDataSetView: TFYSwiftEmptyDataSetView? {
         get {
-            if let view = objc_getAssociatedObject(self, &kEmptyDataSetView) as? TFYSwiftEmptyDataSetView {
+            if let view = objc_getAssociatedObject(self,(kEmptyDataSetView)) as? TFYSwiftEmptyDataSetView {
                 return view
             } else {
                 let view = TFYSwiftEmptyDataSetView.init(frame: frame)
@@ -93,12 +93,12 @@ extension UIScrollView: UIGestureRecognizerDelegate {
                 view.addGestureRecognizer(tapGesture)
                 view.button.addTarget(self, action: #selector(didTapDataButton(_:)), for: .touchUpInside)
 
-                objc_setAssociatedObject(self, &kEmptyDataSetView, view, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                objc_setAssociatedObject(self,(kEmptyDataSetView), view, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                 return view
             }
         }
         set {
-            objc_setAssociatedObject(self, &kEmptyDataSetView, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(self,(kEmptyDataSetView), newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
     }
     
