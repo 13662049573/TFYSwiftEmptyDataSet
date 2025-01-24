@@ -12,13 +12,8 @@ class TFYSwiftEmptyFiveController: TFYSwiftBaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.tableView.emptyDataSetSource = self
-        self.tableView.emptyDataSetDelegate = self;
     }
     
 
 }
 
-extension TFYSwiftEmptyFiveController {
-    
-}

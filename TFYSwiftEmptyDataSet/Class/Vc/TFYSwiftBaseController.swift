@@ -15,6 +15,8 @@ class TFYSwiftBaseController: UIViewController {
         let tabView = TFYSwiftTableView(frame: view.bounds, style: .plain)
         tabView.delegate = self
         tabView.dataSource = self;
+        tabView.emptyDataSetDelegate = self
+        tabView.emptyDataSetSource = self
         return tabView
     }()
     
@@ -109,7 +111,7 @@ extension TFYSwiftBaseController: EmptyDataSetSource,EmptyDataSetDelegate {
     }
     /// 展示的图片
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        return UIImage(named: "placeholder_kickstarter")
+        return UIImage(named: "placeholder_dropbox")
     }
     
     /// 竖直位置
