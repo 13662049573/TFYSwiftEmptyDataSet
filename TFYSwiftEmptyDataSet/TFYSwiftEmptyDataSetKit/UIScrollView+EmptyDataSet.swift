@@ -253,6 +253,10 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             willAppear()
             
             if let view = emptyDataSetView {
+                // 修复：插入前先移除已有的emptyDataSetView，防止重复
+                if view.superview != nil {
+                    view.removeFromSuperview()
+                }
                 
                 // 配置空数据集淡出显示
                 view.fadeInOnDisplay = shouldFadeIn

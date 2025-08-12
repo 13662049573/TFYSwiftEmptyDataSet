@@ -111,7 +111,7 @@ extension TFYSwiftBaseController: EmptyDataSetSource,EmptyDataSetDelegate {
     }
     /// 展示的图片
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        return UIImage(named: "placeholder_dropbox")
+        return UIImage(named: "play_fail")
     }
     
     /// 竖直位置
