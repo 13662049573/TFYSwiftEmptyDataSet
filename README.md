@@ -1,164 +1,121 @@
 # TFYSwiftEmptyDataSet
 
-[![Platform](https://img.shields.io/badge/platform-iOS-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)
+[![Platform](https://img.shields.io/badge/platform-iOS%2015%2B-blue.svg?style=flat)](https://developer.apple.com/iphone/)
 [![Language](https://img.shields.io/badge/language-Swift-brightgreen.svg?style=flat)](https://developer.apple.com/swift)
-[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](https://github.com/13662049573/TFYSwiftEmptyDataSet/blob/main/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](LICENSE)
 
-一个优雅的方式来处理 UITableView/UICollectionView 的空数据状态，完全用 Swift 编写。
+优雅处理 `UITableView` / `UICollectionView` 空数据与加载态的 Swift 库，支持协议与链式两种配置方式。
 
 ## 特性
 
-- [x] 支持 UITableView 和 UICollectionView
-- [x] 完全用 Swift 编写，支持链式调用
-- [x] 高度可定制的空状态视图
-- [x] 支持图片、标题、详细描述、按钮等组件
-- [x] 支持自定义视图
-- [x] 支持图片动画
-- [x] 支持垂直偏移和间距调整
-- [x] 支持点击事件处理
-- [x] 支持滚动控制
-- [x] 自动处理数据加载状态
-
-## 预览
-
-[这里放置 2-3 张效果图]
+- UITableView / UICollectionView 自动 hook `reloadData`
+- **协议** `EmptyDataSetSource` / `EmptyDataSetDelegate`
+- **配置式** `EmptyDataSetConfiguration`，库内部强引用配置适配器
+- **链式** `emptyDataSetView { }` 闭包配置
+- 图片、标题、描述、按钮、自定义视图
+- 图片 Template 着色与 CAAnimation
+- 垂直偏移、元素间距、背景色
+- 图片尺寸、内容边距、最大内容宽度、按钮内边距
+- **加载态** `emptyDataSetIsLoading`
+- **强制显示** `emptyDataSetShouldBeForcedToDisplay`
+- 滚动/点击权限、淡入动画、生命周期回调、可访问性文案
+- 支持 `reloadData`、insert/delete/reload rows/items/sections、batch updates 后自动刷新
+- 深色模式语义色（`EmptyDataSetContent`）
+- 最低 **iOS 15+**
 
 ## 要求
 
-- iOS 12.0+
+- iOS 15.0+
 - Swift 5.0+
-- Xcode 12.0+
+- Xcode 14.0+
 
 ## 安装
 
 ### CocoaPods
 
 ```ruby
-pod 'TFYSwiftEmptyDataSet'
+pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.0'
 ```
 
-### Swift Package Manager
+### 源码
+
+将 `TFYSwiftEmptyDataSetKit` 目录拖入工程即可。
+
+## 用法
+
+### 协议方式（纯 Swift，无需 `@objc`）
+
+实现 `EmptyDataSetSource` / `EmptyDataSetDelegate`，只写需要定制的方法，其余走协议 extension 默认值：
 
 ```swift
-dependencies: [
-    .package(url: "https://github.com/13662049573/TFYSwiftEmptyDataSet.git", .upToNextMajor(from: "2.0.5"))
-]
-```
-
-## 使用方法
-
-### 基础用法
-
-```swift
-import TFYSwiftEmptyDataSet
-
-class ViewController: UIViewController {
-    @IBOutlet weak var tableView: UITableView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        // 设置空数据状态
-        tableView.emptyDataSetView { emptyView in
-            emptyView
-                .image(UIImage(named: "empty_icon"))
-                .titleLabelString(NSAttributedString(string: "暂无数据"))
-                .detailLabelString(NSAttributedString(string: "点击刷新试试"))
-                .didTapContentView {
-                    print("点击了空视图")
-                }
-        }
+final class ListController: UIViewController, EmptyDataSetSource {
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        EmptyDataSetContent.title("暂无数据")
+    }
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        UIImage(named: "empty")
     }
 }
+
+// viewDidLoad 中
+tableView.emptyDataSetSource = self
 ```
 
-### 高级配置
+### 链式方式
 
 ```swift
-tableView.emptyDataSetView { emptyView in
-    emptyView
-        .image(UIImage(named: "empty_icon"))
-        .imageTintColor(.gray)
-        .titleLabelString(NSAttributedString(
-            string: "没有搜索结果",
-            attributes: [
-                .font: UIFont.boldSystemFont(ofSize: 17),
-                .foregroundColor: UIColor.darkGray
-            ]
-        ))
-        .detailLabelString(NSAttributedString(
-            string: "换个关键词试试",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 15),
-                .foregroundColor: UIColor.gray
-            ]
-        ))
-        .buttonTitle(NSAttributedString(string: "重新加载"), for: .normal)
-        .verticalOffset(50)
-        .verticalSpace(20)
-        .shouldFadeIn(true)
-        .isScrollAllowed(false)
-        .didTapDataButton {
-            print("点击了按钮")
-        }
+tableView.emptyDataSetView { view in
+    view
+        .image(UIImage(named: "empty"))
+        .titleLabelString(EmptyDataSetContent.title("暂无数据"))
+        .detailLabelString(EmptyDataSetContent.detail("下拉刷新试试"))
+        .buttonTitle(EmptyDataSetContent.buttonTitle("重试"), for: .normal)
+        .imageSize(CGSize(width: 92, height: 92))
+        .contentInsets(UIEdgeInsets(top: 12, left: 28, bottom: 12, right: 28))
+        .maximumContentWidth(320)
+        .buttonContentInsets(NSDirectionalEdgeInsets(top: 10, leading: 18, bottom: 10, trailing: 18))
+        .accessibilityLabel("暂无数据，点击重试")
+        .didTapDataButton { /* 重试 */ }
 }
 ```
 
-## 自定义
-
-### 使用自定义视图
+### 配置式方式
 
 ```swift
-let customView = CustomEmptyView()
-tableView.emptyDataSetView { emptyView in
-    emptyView.customView(customView)
-}
-```
-
-### 添加动画
-
-```swift
-let animation = CABasicAnimation(keyPath: "transform.rotation.z")
-animation.duration = 1.0
-animation.repeatCount = .infinity
-
-tableView.emptyDataSetView { emptyView in
-    emptyView
-        .image(UIImage(named: "loading"))
-        .imageAnimation(animation)
-}
-```
-
-## 代理方法
-
-通过实现 `EmptyDataSetDelegate` 协议来控制空数据集的行为：
-
-```swift
-extension ViewController: EmptyDataSetDelegate {
-    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        return true
+tableView.setEmptyDataSetConfiguration(
+    EmptyDataSetConfiguration(
+        title: EmptyDataSetContent.title("暂无数据"),
+        detail: EmptyDataSetContent.detail("稍后再来看看"),
+        image: UIImage(named: "empty"),
+        buttonTitle: EmptyDataSetContent.buttonTitle("重试"),
+        imageSize: CGSize(width: 92, height: 92),
+        maximumContentWidth: 320,
+        accessibilityLabel: "暂无数据，点击重试"
+    ),
+    onTapButton: {
+        // 重试
     }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-    
-    func emptyDataSetDidTapView(_ scrollView: UIScrollView) {
-        // 处理点击事件
-    }
-}
+)
 ```
 
-## 注意事项
+### 加载中
 
-1. 确保在设置数据源和代理之后再配置空数据视图
-2. 如果使用自定义视图，需要自行处理约束
-3. 建议在主线程更新 UI
+```swift
+tableView.emptyDataSetIsLoading = true
+tableView.reloadData()
+// 请求结束后
+tableView.emptyDataSetIsLoading = false
+tableView.reloadData()
+```
 
-## 贡献
+### UICollectionView
 
-欢迎提交 Issue 和 Pull Request
+与 TableView 相同，设置 `emptyDataSetSource` / `emptyDataSetDelegate` 或链式 API 即可。
+
+## Demo
+
+运行示例 App，首页列出 14 个场景（基础空态、配置式 API、链式 API、按钮、偏移、动画、自定义视图、CollectionView、加载态、强制显示、综合能力等）。
 
 ## 许可证
 
-TFYSwiftEmptyDataSet 基于 MIT 许可证开源。详细内容请查看 [LICENSE](LICENSE) 文件。
+MIT — 见 [LICENSE](LICENSE)

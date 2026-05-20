@@ -2,8 +2,6 @@
 //  TFYSwiftEmptySixController.swift
 //  TFYSwiftEmptyDataSet
 //
-//  Created by 田风有 on 2021/6/23.
-//
 
 import UIKit
 
@@ -11,17 +9,21 @@ class TFYSwiftEmptySixController: TFYSwiftBaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-       
+        bindEmptyDataSet(source: self)
     }
-    
-
 }
 
-extension TFYSwiftEmptySixController {
-    /// 空页面背景色
-    /// Empty page background color
-    override func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
-        return UIColor(hexColor: "d1f5d3") // 浅绿色背景
+extension TFYSwiftEmptySixController: EmptyDataSetSource {
+
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        TFYSwiftEmptyDemoDefaults.title
+    }
+
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        TFYSwiftEmptyDemoDefaults.image
+    }
+
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+        UIColor(hexColor: "d1f5d3")
     }
 }

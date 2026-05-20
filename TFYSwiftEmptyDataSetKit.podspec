@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
 
   spec.name         = "TFYSwiftEmptyDataSetKit"
 
-  spec.version      = "2.0.6"
+  spec.version      = "2.1.0"
 
   spec.summary      = "Swift 版的数据空添加图数据 最低支持iOS 15 Swift5"
 

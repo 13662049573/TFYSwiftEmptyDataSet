@@ -2,8 +2,6 @@
 //  TFYSwiftEmptyFourController.swift
 //  TFYSwiftEmptyDataSet
 //
-//  Created by 田风有 on 2021/6/23.
-//
 
 import UIKit
 
@@ -11,15 +9,21 @@ class TFYSwiftEmptyFourController: TFYSwiftBaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        bindEmptyDataSet(source: self, delegate: self)
     }
 }
 
-extension TFYSwiftEmptyFourController {
-    /// 空页面图片动画
-    /// Empty page image animation
-    override func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
-        // 旋转动画
+extension TFYSwiftEmptyFourController: EmptyDataSetSource {
+
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        TFYSwiftEmptyDemoDefaults.title
+    }
+
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        TFYSwiftEmptyDemoDefaults.image
+    }
+
+    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
         animation.toValue = Double.pi * 2
@@ -27,10 +31,11 @@ extension TFYSwiftEmptyFourController {
         animation.repeatCount = .infinity
         return animation
     }
-    /// 允许图片动画
-    /// Allow image animation
-    override func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
 }
 
+extension TFYSwiftEmptyFourController: EmptyDataSetDelegate {
+
+    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+}

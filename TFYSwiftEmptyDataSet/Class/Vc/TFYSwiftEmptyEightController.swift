@@ -2,8 +2,6 @@
 //  TFYSwiftEmptyEightController.swift
 //  TFYSwiftEmptyDataSet
 //
-//  Created by 田风有 on 2021/6/23.
-//
 
 import UIKit
 
@@ -11,34 +9,25 @@ class TFYSwiftEmptyEightController: TFYSwiftBaseController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
+        bindEmptyDataSet(source: self, delegate: self)
     }
 }
 
-extension TFYSwiftEmptyEightController {
-    /// 标题
-    override func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        let attr: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 20),
-            .foregroundColor: UIColor.systemPurple
-        ]
-        return NSAttributedString(string: "全部功能演示\nAll Features", attributes: attr)
+extension TFYSwiftEmptyEightController: EmptyDataSetSource {
+
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        EmptyDataSetContent.title("全部功能演示")
     }
-    /// 描述
-    override func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        let attr: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 14),
-            .foregroundColor: UIColor.systemGray
-        ]
-        return NSAttributedString(string: "本页面演示所有空页面协议功能\nShow all empty page features.", attributes: attr)
+
+    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
+        EmptyDataSetContent.detail("协议、按钮、动画、背景、布局、安全区、动态字体与可访问性能力集中展示。")
     }
-    /// 图片
-    override func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        return UIImage(named: "play_fail")
+
+    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
+        TFYSwiftEmptyDemoDefaults.image
     }
-    /// 图片动画
-    override func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
+
+    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? {
         let animation = CABasicAnimation(keyPath: "transform.rotation.z")
         animation.fromValue = 0
         animation.toValue = Double.pi * 2
@@ -46,81 +35,79 @@ extension TFYSwiftEmptyEightController {
         animation.repeatCount = .infinity
         return animation
     }
-    /// 按钮标题
-    override func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
-        let attr: [NSAttributedString.Key: Any] = [
-            .font: UIFont.systemFont(ofSize: 16),
-            .foregroundColor: UIColor.systemBlue
-        ]
-        return NSAttributedString(string: "操作按钮 Action", attributes: attr)
+
+    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
+        EmptyDataSetContent.buttonTitle("操作按钮")
     }
-    /// 按钮图片
-    func buttonImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
-        return UIImage(named: "module_vip")
+
+    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
+        UIImage(named: "module_btn_bg")
     }
-    /// 按钮背景
-    override func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
-        return UIImage(named: "module_btn_bg")
+
+    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
+        UIColor(hexColor: "ececec")
     }
-    /// 背景色
-    override func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? {
-        return UIColor(hexColor: "ececec")
+
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        -80
     }
-    /// 自定义视图
-    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? {
-        return nil // 不用自定义视图，展示全部元素
+
+    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        18
     }
-    /// 竖直偏移
-    override func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return -80
+
+    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize {
+        CGSize(width: 84, height: 84)
     }
-    /// 元素间距
-    override func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        return 25
+
+    func contentInsets(forEmptyDataSet scrollView: UIScrollView) -> UIEdgeInsets {
+        UIEdgeInsets(top: 16, left: 30, bottom: 16, right: 30)
     }
-    /// 是否显示
-    override func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool {
-        return true
+
+    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        340
     }
-    /// 是否允许点击
-    override func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool {
-        return true
+
+    func buttonContentInsets(forEmptyDataSet scrollView: UIScrollView) -> NSDirectionalEdgeInsets {
+        NSDirectionalEdgeInsets(top: 12, leading: 22, bottom: 12, trailing: 22)
     }
-    /// 是否允许滚动
-    override func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-    /// 是否强制显示
-    func emptyDataSetShouldBeForcedToDisplay(_ scrollView: UIScrollView) -> Bool {
-        return false
-    }
-    /// 是否允许图片动画
-    override func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-    /// 点击空白视图
-    override func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
-        print("点击了空白视图（Tapped empty view）")
-    }
-    /// 点击按钮
-    override func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
-        print("点击了按钮（Tapped button）")
-    }
-    /// 将要出现
-    func emptyDataSetWillAppear(_ scrollView: UIScrollView) {
-        print("空页面将要出现（Will appear）")
-    }
-    /// 已经出现
-    func emptyDataSetDidAppear(_ scrollView: UIScrollView) {
-        print("空页面已经出现（Did appear）")
-    }
-    /// 将要消失
-    func emptyDataSetWillDisappear(_ scrollView: UIScrollView) {
-        print("空页面将要消失（Will disappear）")
-    }
-    /// 已经消失
-    func emptyDataSetDidDisappear(_ scrollView: UIScrollView) {
-        print("空页面已经消失（Did disappear）")
+
+    func accessibilityLabel(forEmptyDataSet scrollView: UIScrollView) -> String? {
+        "全部功能演示空态，包含图片、标题、描述、按钮和动画"
     }
 }
 
+extension TFYSwiftEmptyEightController: EmptyDataSetDelegate {
+
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+
+    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool {
+        true
+    }
+
+    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
+        print("点击了空白视图")
+    }
+
+    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
+        print("点击了按钮")
+    }
+
+    func emptyDataSetWillAppear(_ scrollView: UIScrollView) {
+        print("空页面将要出现")
+    }
+
+    func emptyDataSetDidAppear(_ scrollView: UIScrollView) {
+        print("空页面已经出现")
+    }
+
+    func emptyDataSetWillDisappear(_ scrollView: UIScrollView) {
+        print("空页面将要消失")
+    }
+
+    func emptyDataSetDidDisappear(_ scrollView: UIScrollView) {
+        print("空页面已经消失")
+    }
+}

@@ -1,22 +1,35 @@
 //
-//  ViewController.swift
+//  UIColor+Extension.swift
 //  TFYSwiftEmptyDataSet
 //
-//  Created by 田风有 on 2021/6/22.
-//
 
-import Foundation
 import UIKit
 
 extension UIColor {
-    
-    convenience init(hexColor: String) {        
-        var red: UInt64 = 0, green: UInt64 = 0, blue: UInt64 = 0
-        let hex = hexColor as NSString
-        Scanner(string: hex.substring(with: NSRange(location: 0, length: 2))).scanHexInt64(&red)
-        Scanner(string: hex.substring(with: NSRange(location: 2, length: 2))).scanHexInt64(&green)
-        Scanner(string: hex.substring(with: NSRange(location: 4, length: 2))).scanHexInt64(&blue)
-        
-        self.init(red: CGFloat(red)/255.0, green: CGFloat(green)/255.0, blue: CGFloat(blue)/255.0, alpha: 1.0)
+
+    convenience init(hexColor: String, alpha: CGFloat = 1) {
+        var hex = hexColor.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        if hex.hasPrefix("#") { hex.removeFirst() }
+
+        var rgb: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&rgb)
+
+        let r, g, b: CGFloat
+        switch hex.count {
+        case 6:
+            r = CGFloat((rgb & 0xFF0000) >> 16) / 255
+            g = CGFloat((rgb & 0x00FF00) >> 8) / 255
+            b = CGFloat(rgb & 0x0000FF) / 255
+        case 8:
+            r = CGFloat((rgb & 0xFF000000) >> 24) / 255
+            g = CGFloat((rgb & 0x00FF0000) >> 16) / 255
+            b = CGFloat((rgb & 0x0000FF00) >> 8) / 255
+        default:
+            r = 0.72
+            g = 0.72
+            b = 0.72
+        }
+
+        self.init(red: r, green: g, blue: b, alpha: alpha)
     }
 }
