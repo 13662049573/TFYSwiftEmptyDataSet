@@ -44,13 +44,13 @@ https://github.com/13662049573/TFYSwiftEmptyDataSet.git
 也可以在 `Package.swift` 中添加：
 
 ```swift
-.package(url: "https://github.com/13662049573/TFYSwiftEmptyDataSet.git", from: "2.1.1")
+.package(url: "https://github.com/13662049573/TFYSwiftEmptyDataSet.git", from: "2.1.2")
 ```
 
 ### CocoaPods
 
 ```ruby
-pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.1'
+pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.2'
 ```
 
 ### 源码
