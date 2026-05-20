@@ -31,10 +31,26 @@
 
 ## 安装
 
+### Swift Package Manager
+
+在 Xcode 中选择 `File > Add Package Dependencies...`，输入仓库地址：
+
+```text
+https://github.com/13662049573/TFYSwiftEmptyDataSet.git
+```
+
+然后选择 `TFYSwiftEmptyDataSetKit` library product。
+
+也可以在 `Package.swift` 中添加：
+
+```swift
+.package(url: "https://github.com/13662049573/TFYSwiftEmptyDataSet.git", from: "2.1.1")
+```
+
 ### CocoaPods
 
 ```ruby
-pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.0'
+pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.1'
 ```
 
 ### 源码
