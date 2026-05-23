@@ -16,7 +16,6 @@ private enum EmptyDataSetAssociatedKeys {
     static var enabled: UInt8 = 0
     static var loading: UInt8 = 0
     static var savedScrollEnabled: UInt8 = 0
-    static var configurationAdapter: UInt8 = 0
 }
 
 final class WeakObjectContainer: NSObject {
@@ -25,64 +24,6 @@ final class WeakObjectContainer: NSObject {
     init(with weakObject: Any?) {
         super.init()
         self.weakObject = weakObject as AnyObject?
-    }
-}
-
-private final class EmptyDataSetConfigurationAdapter: NSObject, EmptyDataSetSource, EmptyDataSetDelegate {
-    private let configuration: EmptyDataSetConfiguration
-    private let onTapView: (() -> Void)?
-    private let onTapButton: (() -> Void)?
-
-    init(
-        configuration: EmptyDataSetConfiguration,
-        onTapView: (() -> Void)?,
-        onTapButton: (() -> Void)?
-    ) {
-        self.configuration = configuration
-        self.onTapView = onTapView
-        self.onTapButton = onTapButton
-        super.init()
-    }
-
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? { configuration.title }
-    func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? { configuration.detail }
-    func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? { configuration.image }
-    func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? { configuration.imageTintColor }
-    func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? { configuration.imageAnimation }
-    func backgroundColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? { configuration.backgroundColor }
-    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? { configuration.customView }
-    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { configuration.verticalOffset }
-    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { configuration.verticalSpace }
-    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize { configuration.imageSize }
-    func contentInsets(forEmptyDataSet scrollView: UIScrollView) -> UIEdgeInsets { configuration.contentInsets }
-    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { configuration.maximumContentWidth }
-    func buttonContentInsets(forEmptyDataSet scrollView: UIScrollView) -> NSDirectionalEdgeInsets { configuration.buttonContentInsets }
-    func accessibilityLabel(forEmptyDataSet scrollView: UIScrollView) -> String? { configuration.accessibilityLabel }
-
-    func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
-        state == .highlighted ? configuration.highlightedButtonTitle : configuration.buttonTitle
-    }
-
-    func buttonImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
-        state == .highlighted ? configuration.highlightedButtonImage : configuration.buttonImage
-    }
-
-    func buttonBackgroundImage(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> UIImage? {
-        state == .highlighted ? configuration.highlightedButtonBackgroundImage : configuration.buttonBackgroundImage
-    }
-
-    func emptyDataSetShouldFadeIn(_ scrollView: UIScrollView) -> Bool { configuration.shouldFadeIn }
-    func emptyDataSetShouldBeForcedToDisplay(_ scrollView: UIScrollView) -> Bool { configuration.shouldForceDisplay }
-    func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool { configuration.shouldAllowTouch }
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool { configuration.shouldAllowScroll }
-    func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool { configuration.shouldAnimateImage }
-
-    func emptyDataSet(_ scrollView: UIScrollView, didTapView view: UIView) {
-        onTapView?()
-    }
-
-    func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {
-        onTapButton?()
     }
 }
 
@@ -129,6 +70,7 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             }
             objc_setAssociatedObject(self, &EmptyDataSetAssociatedKeys.source, WeakObjectContainer(with: newValue), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
             _ = UIScrollView.swizzleEmptyDataSetIfNeeded
+            reloadEmptyDataSet()
         }
     }
 
@@ -163,30 +105,6 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
         reloadEmptyDataSet()
     }
 
-    public func setEmptyDataSetConfiguration(
-        _ configuration: EmptyDataSetConfiguration,
-        onTapView: (() -> Void)? = nil,
-        onTapButton: (() -> Void)? = nil
-    ) {
-        let adapter = EmptyDataSetConfigurationAdapter(
-            configuration: configuration,
-            onTapView: onTapView,
-            onTapButton: onTapButton
-        )
-        objc_setAssociatedObject(self, &EmptyDataSetAssociatedKeys.configurationAdapter, adapter, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        emptyDataSetSource = adapter
-        emptyDataSetDelegate = adapter
-        _ = UIScrollView.swizzleEmptyDataSetIfNeeded
-        reloadEmptyDataSet()
-    }
-
-    public func removeEmptyDataSetConfiguration() {
-        objc_setAssociatedObject(self, &EmptyDataSetAssociatedKeys.configurationAdapter, nil, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        emptyDataSetSource = nil
-        emptyDataSetDelegate = nil
-        invalidate()
-    }
-
     public func reloadEmptyDataSet() {
         guard isEmptyDataSetEnabled else {
             invalidate()
@@ -196,27 +114,38 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             return
         }
 
-        let shouldShow = (shouldDisplay && (itemsCount == 0 || emptyDataSetIsLoading)) || shouldBeForcedToDisplay
+        let shouldShow = (shouldDisplay
+            && !shouldSuppressForTableHeader
+            && (itemsCount == 0 || emptyDataSetIsLoading))
+            || shouldBeForcedToDisplay
 
         if shouldShow {
             let wasVisible = isEmptyDataSetVisible
             if !wasVisible {
                 willAppear()
             }
-            guard let view = emptyDataSetView else { return }
 
-            view.prepareForReuse()
+            guard let view = emptyDataSetView else { return }
 
             if view.superview != nil, view.superview !== self {
                 view.removeFromSuperview()
             }
 
-            view.fadeInOnDisplay = shouldFadeIn
-
             if view.superview == nil {
-                addSubview(view)
+                if self is UITableView || self is UICollectionView || subviews.count > 1 {
+                    insertSubview(view, at: 0)
+                } else {
+                    addSubview(view)
+                }
             }
             bringSubviewToFront(view)
+
+            // 抑制内容重建过程中可能触发的 Core Animation 隐式动画，避免闪烁
+            CATransaction.begin()
+            CATransaction.setDisableActions(true)
+
+            view.fadeInOnDisplay = shouldFadeIn
+            view.prepareForReuse()
 
             if emptyDataSetIsLoading {
                 let loadingView = emptyDataSetSource?.customView(forEmptyDataSet: self) ?? makeDefaultLoadingView()
@@ -226,10 +155,8 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             } else {
                 let renderingMode: UIImage.RenderingMode = imageTintColor != nil ? .alwaysTemplate : .alwaysOriginal
                 view.verticalSpace = verticalSpace
-                view.imageSize = imageSize
-                view.contentInsets = contentInsets
-                view.maximumContentWidth = maximumContentWidth
-                view.buttonContentInsets = buttonContentInsets
+                view.preferredMaxImageWidth = imageMaxWidth
+                view.customImageSize = customImageSize
 
                 if let image = image {
                     view.imageView.image = image.withRenderingMode(renderingMode)
@@ -255,8 +182,6 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             view.isHidden = false
             view.clipsToBounds = true
             view.isUserInteractionEnabled = isTouchAllowed
-            view.isAccessibilityElement = emptyDataSetAccessibilityLabel != nil
-            view.accessibilityLabel = emptyDataSetAccessibilityLabel
 
             saveScrollEnabledIfNeeded()
             isScrollEnabled = isScrollAllowed
@@ -272,14 +197,10 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
             view.setupConstraints()
             view.layoutIfNeeded()
 
-            if view.fadeInOnDisplay && !wasVisible {
-                view.contentView.alpha = 0
-                UIView.animate(withDuration: 0.25, delay: 0, options: [.beginFromCurrentState, .curveEaseInOut, .allowUserInteraction]) {
-                    view.contentView.alpha = 1
-                }
-            } else {
-                view.contentView.alpha = 1
-            }
+            CATransaction.commit()
+
+            // 只在从隐藏到显示的转场时执行淡入；后续刷新直接保持可见，杜绝闪烁
+            view.applyContentVisibility(animated: !wasVisible)
 
             if !wasVisible {
                 didAppear()
@@ -308,7 +229,6 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
                 return view
             }
             let view = TFYSwiftEmptyDataSetView(frame: bounds)
-            view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             view.isHidden = true
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapContentView(_:)))
             tapGesture.delegate = self
@@ -342,6 +262,24 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
         return 0
     }
 
+    /// 仅在 delegate 显式要求且存在可见 `tableHeaderView` 时才隐藏空态；默认不隐藏
+    private var shouldSuppressForTableHeader: Bool {
+        guard let tableView = self as? UITableView else { return false }
+        guard emptyDataSetDelegate?.emptyDataSetShouldHideWhenTableHeaderVisible(self) == true else {
+            return false
+        }
+        guard let header = tableView.tableHeaderView else { return false }
+        return header.frame.height > 0.01
+    }
+
+    /// 计算空态视图相对 `scrollView.bounds` 的位置（避让 tableHeaderView 与 tableFooterView）
+    private var emptyDataSetReservedInsets: UIEdgeInsets {
+        guard let tableView = self as? UITableView else { return .zero }
+        let top = tableView.tableHeaderView?.frame.height ?? 0
+        let bottom = tableView.tableFooterView?.frame.height ?? 0
+        return UIEdgeInsets(top: top, left: 0, bottom: bottom, right: 0)
+    }
+
     // MARK: Source getters
 
     private var titleLabelString: NSAttributedString? {
@@ -362,6 +300,14 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
 
     private var imageTintColor: UIColor? {
         emptyDataSetSource?.imageTintColor(forEmptyDataSet: self)
+    }
+
+    private var customImageSize: CGSize? {
+        emptyDataSetSource?.imageSize(forEmptyDataSet: self)
+    }
+
+    private var imageMaxWidth: CGFloat {
+        emptyDataSetSource?.imageMaxWidth(forEmptyDataSet: self) ?? EmptyDataSetContent.defaultImageMaxWidth
     }
 
     private func buttonTitle(for state: UIControl.State) -> NSAttributedString? {
@@ -391,27 +337,6 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
     private var verticalSpace: CGFloat {
         let value = emptyDataSetSource?.spaceHeight(forEmptyDataSet: self) ?? 11
         return value > 0 ? value : 11
-    }
-
-    private var imageSize: CGSize {
-        emptyDataSetSource?.imageSize(forEmptyDataSet: self) ?? .zero
-    }
-
-    private var contentInsets: UIEdgeInsets {
-        emptyDataSetSource?.contentInsets(forEmptyDataSet: self) ?? UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    }
-
-    private var maximumContentWidth: CGFloat {
-        emptyDataSetSource?.maximumContentWidth(forEmptyDataSet: self) ?? 0
-    }
-
-    private var buttonContentInsets: NSDirectionalEdgeInsets {
-        emptyDataSetSource?.buttonContentInsets(forEmptyDataSet: self)
-            ?? NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
-    }
-
-    private var emptyDataSetAccessibilityLabel: String? {
-        emptyDataSetSource?.accessibilityLabel(forEmptyDataSet: self)
     }
 
     // MARK: Delegate getters
@@ -477,18 +402,18 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
     // MARK: Invalidate
 
     private func invalidate() {
-        guard isEmptyDataSetVisible else {
-            restoreScrollEnabledIfNeeded()
-            return
+        let wasVisible = isEmptyDataSetVisible
+        if wasVisible {
+            willDisappear()
         }
-        willDisappear()
         if let view = emptyDataSetView {
             view.prepareForReuse()
             view.isHidden = true
-            view.contentView.alpha = 0
         }
         restoreScrollEnabledIfNeeded()
-        didDisappear()
+        if wasVisible {
+            didDisappear()
+        }
     }
 
     // MARK: Layout
@@ -496,13 +421,18 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
     func updateEmptyDataSetViewFrame() {
         guard let view = objc_getAssociatedObject(self, &EmptyDataSetAssociatedKeys.view) as? TFYSwiftEmptyDataSetView,
               view.superview === self else { return }
-        var rect = bounds
-        rect.origin = .zero
-        if rect.width <= 0 || rect.height <= 0 {
-            rect = CGRect(origin: .zero, size: CGSize(width: bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width,
-                                                     height: bounds.height > 0 ? bounds.height : UIScreen.main.bounds.height))
-        }
-        view.frame = rect
+
+        let fallbackWidth = bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width
+        let fallbackHeight = bounds.height > 0 ? bounds.height : UIScreen.main.bounds.height
+        let baseWidth = bounds.width > 0 ? bounds.width : fallbackWidth
+        let baseHeight = bounds.height > 0 ? bounds.height : fallbackHeight
+
+        let insets = emptyDataSetReservedInsets
+        let originY = insets.top
+        let availableHeight = max(baseHeight - insets.top - insets.bottom, 0)
+        let finalHeight = availableHeight > 0 ? availableHeight : baseHeight
+
+        view.frame = CGRect(x: 0, y: originY, width: baseWidth, height: finalHeight)
     }
 
     private func makeDefaultLoadingView() -> UIView {
@@ -551,51 +481,9 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
         swizzleMethod(for: UITableView.self,
                       original: #selector(UITableView.endUpdates),
                       swizzled: #selector(UIScrollView.tfy_tableViewSwizzledEndUpdates))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.insertRows(at:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledInsertRows(at:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.deleteRows(at:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledDeleteRows(at:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.reloadRows(at:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledReloadRows(at:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.insertSections(_:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledInsertSections(_:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.deleteSections(_:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledDeleteSections(_:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.reloadSections(_:with:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledReloadSections(_:with:)))
-        swizzleMethod(for: UITableView.self,
-                      original: #selector(UITableView.performBatchUpdates(_:completion:)),
-                      swizzled: #selector(UIScrollView.tfy_tableViewSwizzledPerformBatchUpdates(_:completion:)))
         swizzleMethod(for: UICollectionView.self,
                       original: #selector(UICollectionView.reloadData),
                       swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledReloadData))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.insertItems(at:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledInsertItems(at:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.deleteItems(at:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledDeleteItems(at:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.reloadItems(at:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledReloadItems(at:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.insertSections(_:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledInsertSections(_:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.deleteSections(_:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledDeleteSections(_:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.reloadSections(_:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledReloadSections(_:)))
-        swizzleMethod(for: UICollectionView.self,
-                      original: #selector(UICollectionView.performBatchUpdates(_:completion:)),
-                      swizzled: #selector(UIScrollView.tfy_collectionViewSwizzledPerformBatchUpdates(_:completion:)))
         swizzleMethod(for: UIScrollView.self,
                       original: #selector(UIScrollView.layoutSubviews),
                       swizzled: #selector(UIScrollView.tfy_swizzledLayoutSubviews))
@@ -624,83 +512,9 @@ extension UIScrollView: @retroactive UIGestureRecognizerDelegate {
         reloadEmptyDataSet()
     }
 
-    @objc private func tfy_tableViewSwizzledInsertRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledInsertRows(at: indexPaths, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledDeleteRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledDeleteRows(at: indexPaths, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledReloadRows(at indexPaths: [IndexPath], with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledReloadRows(at: indexPaths, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledInsertSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledInsertSections(sections, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledDeleteSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledDeleteSections(sections, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledReloadSections(_ sections: IndexSet, with animation: UITableView.RowAnimation) {
-        tfy_tableViewSwizzledReloadSections(sections, with: animation)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_tableViewSwizzledPerformBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
-        tfy_tableViewSwizzledPerformBatchUpdates(updates) { finished in
-            self.reloadEmptyDataSet()
-            completion?(finished)
-        }
-    }
-
     @objc private func tfy_collectionViewSwizzledReloadData() {
         tfy_collectionViewSwizzledReloadData()
         reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledInsertItems(at indexPaths: [IndexPath]) {
-        tfy_collectionViewSwizzledInsertItems(at: indexPaths)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledDeleteItems(at indexPaths: [IndexPath]) {
-        tfy_collectionViewSwizzledDeleteItems(at: indexPaths)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledReloadItems(at indexPaths: [IndexPath]) {
-        tfy_collectionViewSwizzledReloadItems(at: indexPaths)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledInsertSections(_ sections: IndexSet) {
-        tfy_collectionViewSwizzledInsertSections(sections)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledDeleteSections(_ sections: IndexSet) {
-        tfy_collectionViewSwizzledDeleteSections(sections)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledReloadSections(_ sections: IndexSet) {
-        tfy_collectionViewSwizzledReloadSections(sections)
-        reloadEmptyDataSet()
-    }
-
-    @objc private func tfy_collectionViewSwizzledPerformBatchUpdates(_ updates: (() -> Void)?, completion: ((Bool) -> Void)?) {
-        tfy_collectionViewSwizzledPerformBatchUpdates(updates) { finished in
-            self.reloadEmptyDataSet()
-            completion?(finished)
-        }
     }
 
     @objc private func tfy_swizzledLayoutSubviews() {

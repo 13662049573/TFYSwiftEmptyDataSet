@@ -7,7 +7,6 @@ import UIKit
 
 enum TFYSwiftEmptyDemo: Int, CaseIterable {
     case basic
-    case configurationAPI
     case chainAPI
     case button
     case offsetSpacing
@@ -19,12 +18,12 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
     case loading
     case forceDisplay
     case collectionView
+    case tableHeaderView
     case allFeatures
 
     var title: String {
         switch self {
         case .basic: return "基础空态（协议 Source）"
-        case .configurationAPI: return "配置式 API（强引用）"
         case .chainAPI: return "链式 API（emptyDataSetView）"
         case .button: return "带操作按钮"
         case .offsetSpacing: return "垂直偏移与间距"
@@ -36,6 +35,7 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
         case .loading: return "加载中状态"
         case .forceDisplay: return "强制显示空态"
         case .collectionView: return "UICollectionView"
+        case .tableHeaderView: return "TableHeader 与空态共存"
         case .allFeatures: return "全功能综合演示"
         }
     }
@@ -43,7 +43,6 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
     var subtitle: String {
         switch self {
         case .basic: return "图片 + 标题 + 描述"
-        case .configurationAPI: return "EmptyDataSetConfiguration"
         case .chainAPI: return "无需实现协议，闭包配置"
         case .button: return "点击按钮重试"
         case .offsetSpacing: return "verticalOffset / spaceHeight"
@@ -55,6 +54,7 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
         case .loading: return "emptyDataSetIsLoading"
         case .forceDisplay: return "有数据时也显示空态"
         case .collectionView: return "网格列表空态"
+        case .tableHeaderView: return "空态自动定位到 Header 下方"
         case .allFeatures: return "Delegate 生命周期 + 全部元素"
         }
     }
@@ -62,7 +62,6 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
     func makeViewController() -> UIViewController {
         switch self {
         case .basic: return TFYSwiftEmptyOneController()
-        case .configurationAPI: return TFYSwiftEmptyConfigurationController()
         case .chainAPI: return TFYSwiftEmptyChainController()
         case .button: return TFYSwiftEmptyTwoController()
         case .offsetSpacing: return TFYSwiftEmptyThreeController()
@@ -74,6 +73,7 @@ enum TFYSwiftEmptyDemo: Int, CaseIterable {
         case .loading: return TFYSwiftEmptyLoadingController()
         case .forceDisplay: return TFYSwiftEmptyForceDisplayController()
         case .collectionView: return TFYSwiftEmptyCollectionController()
+        case .tableHeaderView: return TFYSwiftEmptyHeaderController()
         case .allFeatures: return TFYSwiftEmptyEightController()
         }
     }

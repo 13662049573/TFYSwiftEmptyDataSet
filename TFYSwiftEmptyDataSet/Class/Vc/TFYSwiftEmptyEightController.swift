@@ -20,7 +20,7 @@ extension TFYSwiftEmptyEightController: EmptyDataSetSource {
     }
 
     func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? {
-        EmptyDataSetContent.detail("协议、按钮、动画、背景、布局、安全区、动态字体与可访问性能力集中展示。")
+        EmptyDataSetContent.detail("本页面演示所有空页面协议功能")
     }
 
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
@@ -53,27 +53,7 @@ extension TFYSwiftEmptyEightController: EmptyDataSetSource {
     }
 
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        18
-    }
-
-    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize {
-        CGSize(width: 84, height: 84)
-    }
-
-    func contentInsets(forEmptyDataSet scrollView: UIScrollView) -> UIEdgeInsets {
-        UIEdgeInsets(top: 16, left: 30, bottom: 16, right: 30)
-    }
-
-    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        340
-    }
-
-    func buttonContentInsets(forEmptyDataSet scrollView: UIScrollView) -> NSDirectionalEdgeInsets {
-        NSDirectionalEdgeInsets(top: 12, leading: 22, bottom: 12, trailing: 22)
-    }
-
-    func accessibilityLabel(forEmptyDataSet scrollView: UIScrollView) -> String? {
-        "全部功能演示空态，包含图片、标题、描述、按钮和动画"
+        25
     }
 }
 

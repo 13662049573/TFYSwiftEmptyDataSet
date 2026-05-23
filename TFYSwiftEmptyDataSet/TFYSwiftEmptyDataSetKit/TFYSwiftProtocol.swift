@@ -13,6 +13,8 @@ public protocol EmptyDataSetDelegate: AnyObject {
     func emptyDataSetShouldFadeIn(_ scrollView: UIScrollView) -> Bool
     func emptyDataSetShouldBeForcedToDisplay(_ scrollView: UIScrollView) -> Bool
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool
+    /// 为 `true` 时，存在 `tableHeaderView` 时隐藏空态；默认 `false`（即默认仍展示，定位在 header 下方）
+    func emptyDataSetShouldHideWhenTableHeaderVisible(_ scrollView: UIScrollView) -> Bool
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool
     func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool
@@ -30,6 +32,8 @@ public extension EmptyDataSetDelegate {
     func emptyDataSetShouldFadeIn(_ scrollView: UIScrollView) -> Bool { true }
     func emptyDataSetShouldBeForcedToDisplay(_ scrollView: UIScrollView) -> Bool { false }
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView) -> Bool { true }
+    /// 默认 `false`：即使存在 `tableHeaderView` 也展示空态，并定位于 header 下方
+    func emptyDataSetShouldHideWhenTableHeaderVisible(_ scrollView: UIScrollView) -> Bool { false }
     func emptyDataSetShouldAllowTouch(_ scrollView: UIScrollView) -> Bool { true }
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView) -> Bool { false }
     func emptyDataSetShouldAnimateImageView(_ scrollView: UIScrollView) -> Bool { false }
@@ -52,6 +56,10 @@ public protocol EmptyDataSetSource: AnyObject {
     func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString?
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage?
     func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor?
+    /// 自定义插图展示尺寸；默认 `nil` 表示按图片与 `imageMaxWidth` 自动计算
+    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize?
+    /// 插图最大宽度（pt）；默认 280
+    func imageMaxWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat
     func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation?
 
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString?
@@ -62,11 +70,6 @@ public protocol EmptyDataSetSource: AnyObject {
     func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView?
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat
-    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize
-    func contentInsets(forEmptyDataSet scrollView: UIScrollView) -> UIEdgeInsets
-    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat
-    func buttonContentInsets(forEmptyDataSet scrollView: UIScrollView) -> NSDirectionalEdgeInsets
-    func accessibilityLabel(forEmptyDataSet scrollView: UIScrollView) -> String?
 }
 
 public extension EmptyDataSetSource {
@@ -74,6 +77,8 @@ public extension EmptyDataSetSource {
     func description(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString? { nil }
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? { nil }
     func imageTintColor(forEmptyDataSet scrollView: UIScrollView) -> UIColor? { nil }
+    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize? { nil }
+    func imageMaxWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { EmptyDataSetContent.defaultImageMaxWidth }
     func imageAnimation(forEmptyDataSet scrollView: UIScrollView) -> CAAnimation? { nil }
 
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? { nil }
@@ -84,11 +89,4 @@ public extension EmptyDataSetSource {
     func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView? { nil }
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { 0 }
     func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { 11 }
-    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize { .zero }
-    func contentInsets(forEmptyDataSet scrollView: UIScrollView) -> UIEdgeInsets { UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16) }
-    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat { 0 }
-    func buttonContentInsets(forEmptyDataSet scrollView: UIScrollView) -> NSDirectionalEdgeInsets {
-        NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
-    }
-    func accessibilityLabel(forEmptyDataSet scrollView: UIScrollView) -> String? { nil }
 }

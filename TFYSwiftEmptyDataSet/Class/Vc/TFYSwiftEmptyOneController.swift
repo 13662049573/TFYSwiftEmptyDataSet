@@ -24,7 +24,7 @@ extension TFYSwiftEmptyOneController: EmptyDataSetSource {
     }
 
     func image(forEmptyDataSet scrollView: UIScrollView) -> UIImage? {
-        TFYSwiftEmptyDemoDefaults.image
+        UIImage(named: "community_Nodata")
     }
 
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {

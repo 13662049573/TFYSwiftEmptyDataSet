@@ -46,29 +46,13 @@ final class TFYSwiftEmptyCollectionController: UIViewController {
     }
 
     private func addItems() {
-        let newItems = (1...6).map { "Item \($0)" }
-        guard items.isEmpty else {
-            items = newItems
-            collectionView.reloadData()
-            return
-        }
-        items = newItems
-        let indexPaths = newItems.indices.map { IndexPath(item: $0, section: 0) }
-        collectionView.performBatchUpdates {
-            collectionView.insertItems(at: indexPaths)
-        }
+        items = (1...6).map { "Item \($0)" }
+        collectionView.reloadData()
     }
 
     private func clearItems() {
-        let indexPaths = items.indices.map { IndexPath(item: $0, section: 0) }
         items.removeAll()
-        guard !indexPaths.isEmpty else {
-            collectionView.reloadData()
-            return
-        }
-        collectionView.performBatchUpdates {
-            collectionView.deleteItems(at: indexPaths)
-        }
+        collectionView.reloadData()
     }
 }
 
@@ -113,14 +97,6 @@ extension TFYSwiftEmptyCollectionController: EmptyDataSetSource, EmptyDataSetDel
 
     func buttonTitle(forEmptyDataSet scrollView: UIScrollView, for state: UIControl.State) -> NSAttributedString? {
         EmptyDataSetContent.buttonTitle("添加条目")
-    }
-
-    func imageSize(forEmptyDataSet scrollView: UIScrollView) -> CGSize {
-        CGSize(width: 96, height: 96)
-    }
-
-    func maximumContentWidth(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        320
     }
 
     func emptyDataSet(_ scrollView: UIScrollView, didTapButton button: UIButton) {

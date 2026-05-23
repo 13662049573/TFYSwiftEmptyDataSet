@@ -39,7 +39,7 @@
 		E0A1B00C268300010030253B /* TFYSwiftEmptyForceDisplayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A1B00B268300010030253B /* TFYSwiftEmptyForceDisplayController.swift */; };
 		E0A1B00E268300010030253B /* TFYSwiftEmptyCollectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A1B00D268300010030253B /* TFYSwiftEmptyCollectionController.swift */; };
 		E0A1B010268300010030253B /* TFYSwiftEmptyDemoDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A1B00F268300010030253B /* TFYSwiftEmptyDemoDefaults.swift */; };
-		E0A1B012268300010030253B /* TFYSwiftEmptyConfigurationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A1B011268300010030253B /* TFYSwiftEmptyConfigurationController.swift */; };
+		E0A1B012268300010030253B /* TFYSwiftEmptyHeaderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A1B011268300010030253B /* TFYSwiftEmptyHeaderController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +96,7 @@
 		E0A1B00B268300010030253B /* TFYSwiftEmptyForceDisplayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyForceDisplayController.swift; sourceTree = "<group>"; };
 		E0A1B00D268300010030253B /* TFYSwiftEmptyCollectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyCollectionController.swift; sourceTree = "<group>"; };
 		E0A1B00F268300010030253B /* TFYSwiftEmptyDemoDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyDemoDefaults.swift; sourceTree = "<group>"; };
-		E0A1B011268300010030253B /* TFYSwiftEmptyConfigurationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyConfigurationController.swift; sourceTree = "<group>"; };
+		E0A1B011268300010030253B /* TFYSwiftEmptyHeaderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TFYSwiftEmptyHeaderController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -252,11 +252,11 @@
 				366D625B26836774007C811B /* TFYSwiftEmptyEightController.swift */,
 				366D625D26836786007C811B /* TFYSwiftBaseController.swift */,
 				E0A1B005268300010030253B /* TFYSwiftEmptyChainController.swift */,
-				E0A1B011268300010030253B /* TFYSwiftEmptyConfigurationController.swift */,
 				E0A1B00D268300010030253B /* TFYSwiftEmptyCollectionController.swift */,
 				E0A1B00B268300010030253B /* TFYSwiftEmptyForceDisplayController.swift */,
 				E0A1B007268300010030253B /* TFYSwiftEmptyLoadingController.swift */,
 				E0A1B009268300010030253B /* TFYSwiftEmptyTintController.swift */,
+				E0A1B011268300010030253B /* TFYSwiftEmptyHeaderController.swift */,
 			);
 			path = Vc;
 			sourceTree = "<group>";
@@ -430,7 +430,7 @@
 				E0A1B00C268300010030253B /* TFYSwiftEmptyForceDisplayController.swift in Sources */,
 				E0A1B00E268300010030253B /* TFYSwiftEmptyCollectionController.swift in Sources */,
 				E0A1B010268300010030253B /* TFYSwiftEmptyDemoDefaults.swift in Sources */,
-				E0A1B012268300010030253B /* TFYSwiftEmptyConfigurationController.swift in Sources */,
+				E0A1B012268300010030253B /* TFYSwiftEmptyHeaderController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -531,7 +531,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -590,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -618,7 +618,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -649,7 +649,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

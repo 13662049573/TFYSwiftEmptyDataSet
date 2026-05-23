@@ -41,9 +41,10 @@ class TFYSwiftBaseController: UIViewController {
     }
 
     /// 子类在 `viewDidLoad` 中调用，绑定空态数据源
+    /// - Note: 设置 `emptyDataSetSource` 时库内部已自动触发刷新，无需手动 reload
     func bindEmptyDataSet(source: EmptyDataSetSource, delegate: EmptyDataSetDelegate? = nil) {
-        tableView.emptyDataSetSource = source
         tableView.emptyDataSetDelegate = delegate
+        tableView.emptyDataSetSource = source
     }
 
     func reloadData() {

@@ -17,7 +17,6 @@ class TFYSwiftTableView: UITableView {
         estimatedSectionFooterHeight = 0.01
         estimatedSectionHeaderHeight = 0.01
         tableFooterView = UIView()
-        tableHeaderView = UIView()
         estimatedRowHeight = 100
     }
     

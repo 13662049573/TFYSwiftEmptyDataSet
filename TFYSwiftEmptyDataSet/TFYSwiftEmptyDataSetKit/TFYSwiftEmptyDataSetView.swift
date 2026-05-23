@@ -12,7 +12,7 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.isUserInteractionEnabled = true
-        view.alpha = 0
+        view.alpha = 1
         return view
     }()
 
@@ -36,7 +36,6 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "emptyDataSet.titleLabel"
         contentView.addSubview(label)
         return label
@@ -51,7 +50,6 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
-        label.adjustsFontForContentSizeCategory = true
         label.accessibilityIdentifier = "emptyDataSet.detailLabel"
         contentView.addSubview(label)
         return label
@@ -101,10 +99,8 @@ public final class TFYSwiftEmptyDataSetView: UIView {
     internal var fadeInOnDisplay = false
     internal var verticalOffset: CGFloat = 0
     internal var verticalSpace: CGFloat = 11
-    internal var imageSize: CGSize = .zero
-    internal var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-    internal var maximumContentWidth: CGFloat = 0
-    internal var buttonContentInsets: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
+    internal var preferredMaxImageWidth: CGFloat = EmptyDataSetContent.defaultImageMaxWidth
+    internal var customImageSize: CGSize?
 
     internal var didTapContentViewHandle: (() -> Void)?
     internal var didTapDataButtonHandle: (() -> Void)?
@@ -124,25 +120,8 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        if let scrollView = superview as? UIScrollView {
-            frame = scrollView.bounds
-        }
-    }
-
     public override func didMoveToWindow() {
         super.didMoveToWindow()
-        guard window != nil else { return }
-
-        if fadeInOnDisplay {
-            contentView.alpha = 0
-            UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseInOut, .allowUserInteraction]) {
-                self.contentView.alpha = 1
-            }
-        } else {
-            contentView.alpha = 1
-        }
     }
 
     internal func removeAllConstraints() {
@@ -162,15 +141,26 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         button.setAttributedTitle(nil, for: .highlighted)
         button.setBackgroundImage(nil, for: .normal)
         button.setBackgroundImage(nil, for: .highlighted)
-        button.configuration = nil
         customView = nil
-        contentView.alpha = 0
-        accessibilityLabel = nil
-        imageSize = .zero
-        contentInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        maximumContentWidth = 0
-        buttonContentInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
         removeAllConstraints()
+    }
+
+    /// 仅在首次显示（从隐藏到可见的转场）时执行淡入，避免后续重载触发闪烁
+    /// - Parameter animated: 是否执行淡入动画
+    internal func applyContentVisibility(animated: Bool) {
+        contentView.layer.removeAnimation(forKey: "emptyDataSet.fadeIn")
+        if animated && fadeInOnDisplay {
+            contentView.alpha = 0
+            UIView.animate(
+                withDuration: 0.25,
+                delay: 0,
+                options: [.curveEaseInOut, .allowUserInteraction, .beginFromCurrentState]
+            ) {
+                self.contentView.alpha = 1
+            }
+        } else {
+            contentView.alpha = 1
+        }
     }
 
     internal func setupConstraints() {
@@ -202,34 +192,35 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         }
 
         let width = bounds.width > 0 ? bounds.width : UIScreen.main.bounds.width
-        let horizontalPadding = max(contentInsets.left + contentInsets.right, width / 16)
-        let leadingPadding = max(contentInsets.left, horizontalPadding / 2)
-        let trailingPadding = max(contentInsets.right, horizontalPadding / 2)
+        let padding = max(16, width / 16)
         var previousAnchor: NSLayoutYAxisAnchor = contentView.topAnchor
 
         func pinHorizontally(_ view: UIView) {
             NSLayoutConstraint.activate([
-                view.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: leadingPadding),
-                view.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -trailingPadding),
+                view.leadingAnchor.constraint(greaterThanOrEqualTo: contentView.leadingAnchor, constant: padding),
+                view.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: -padding),
                 view.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
             ])
-            if maximumContentWidth > 0 {
-                view.widthAnchor.constraint(lessThanOrEqualToConstant: maximumContentWidth).isActive = true
-            }
         }
 
-        if canShowImage {
+        if canShowImage, let image = imageView.image {
             imageView.isHidden = false
+            let displaySize: CGSize
+            if let customImageSize, customImageSize.width > 0, customImageSize.height > 0 {
+                displaySize = customImageSize
+            } else {
+                displaySize = EmptyDataSetContent.preferredImageDisplaySize(
+                    for: image,
+                    containerWidth: width,
+                    maxWidth: preferredMaxImageWidth
+                )
+            }
             NSLayoutConstraint.activate([
-                imageView.topAnchor.constraint(equalTo: previousAnchor, constant: contentInsets.top),
-                imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+                imageView.topAnchor.constraint(equalTo: previousAnchor),
+                imageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+                imageView.widthAnchor.constraint(equalToConstant: displaySize.width),
+                imageView.heightAnchor.constraint(equalToConstant: displaySize.height)
             ])
-            if imageSize.width > 0 {
-                imageView.widthAnchor.constraint(equalToConstant: imageSize.width).isActive = true
-            }
-            if imageSize.height > 0 {
-                imageView.heightAnchor.constraint(equalToConstant: imageSize.height).isActive = true
-            }
             previousAnchor = imageView.bottomAnchor
         } else {
             imageView.isHidden = true
@@ -238,7 +229,7 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         if canShowTitle {
             titleLabel.isHidden = false
             if previousAnchor === contentView.topAnchor {
-                titleLabel.topAnchor.constraint(equalTo: previousAnchor, constant: contentInsets.top).isActive = true
+                titleLabel.topAnchor.constraint(equalTo: previousAnchor).isActive = true
             } else {
                 titleLabel.topAnchor.constraint(equalTo: previousAnchor, constant: verticalSpace).isActive = true
             }
@@ -251,7 +242,7 @@ public final class TFYSwiftEmptyDataSetView: UIView {
         if canShowDetail {
             detailLabel.isHidden = false
             if previousAnchor === contentView.topAnchor {
-                detailLabel.topAnchor.constraint(equalTo: previousAnchor, constant: contentInsets.top).isActive = true
+                detailLabel.topAnchor.constraint(equalTo: previousAnchor).isActive = true
             } else {
                 detailLabel.topAnchor.constraint(equalTo: previousAnchor, constant: verticalSpace).isActive = true
             }
@@ -263,34 +254,18 @@ public final class TFYSwiftEmptyDataSetView: UIView {
 
         if canShowButton {
             button.isHidden = false
-            if button.backgroundImage(for: .normal) == nil {
-                var configuration = button.configuration ?? UIButton.Configuration.plain()
-                configuration.contentInsets = buttonContentInsets
-                if let title = button.attributedTitle(for: .normal) {
-                    configuration.attributedTitle = AttributedString(title)
-                }
-                if let image = button.image(for: .normal) {
-                    configuration.image = image
-                }
-                button.configuration = configuration
-            }
             if previousAnchor === contentView.topAnchor {
-                button.topAnchor.constraint(equalTo: previousAnchor, constant: contentInsets.top).isActive = true
+                button.topAnchor.constraint(equalTo: previousAnchor).isActive = true
             } else {
                 button.topAnchor.constraint(equalTo: previousAnchor, constant: verticalSpace).isActive = true
             }
             pinHorizontally(button)
-            button.heightAnchor.constraint(greaterThanOrEqualToConstant: 44).isActive = true
-            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -contentInsets.bottom).isActive = true
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         } else {
             button.isHidden = true
             if previousAnchor !== contentView.topAnchor {
-                previousAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -contentInsets.bottom).isActive = true
+                previousAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
             }
-        }
-
-        if !canShowImage && !canShowTitle && !canShowDetail && !canShowButton {
-            contentView.heightAnchor.constraint(equalToConstant: 0).isActive = true
         }
     }
 }
@@ -314,6 +289,18 @@ extension TFYSwiftEmptyDataSetView {
     @discardableResult
     public func image(_ image: UIImage?) -> Self {
         imageView.image = image
+        return self
+    }
+
+    @discardableResult
+    public func imageMaxWidth(_ width: CGFloat) -> Self {
+        preferredMaxImageWidth = width
+        return self
+    }
+
+    @discardableResult
+    public func imageSize(_ size: CGSize?) -> Self {
+        customImageSize = size
         return self
     }
 
@@ -375,37 +362,6 @@ extension TFYSwiftEmptyDataSetView {
     @discardableResult
     public func verticalSpace(_ space: CGFloat) -> Self {
         verticalSpace = space
-        return self
-    }
-
-    @discardableResult
-    public func imageSize(_ size: CGSize) -> Self {
-        imageSize = size
-        return self
-    }
-
-    @discardableResult
-    public func contentInsets(_ insets: UIEdgeInsets) -> Self {
-        contentInsets = insets
-        return self
-    }
-
-    @discardableResult
-    public func maximumContentWidth(_ width: CGFloat) -> Self {
-        maximumContentWidth = width
-        return self
-    }
-
-    @discardableResult
-    public func buttonContentInsets(_ insets: NSDirectionalEdgeInsets) -> Self {
-        buttonContentInsets = insets
-        return self
-    }
-
-    @discardableResult
-    public func accessibilityLabel(_ label: String?) -> Self {
-        isAccessibilityElement = label != nil
-        accessibilityLabel = label
         return self
     }
 
