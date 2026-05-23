@@ -31,7 +31,7 @@
 ### CocoaPods
 
 ```ruby
-pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.0'
+pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.4'
 ```
 
 ### 源码
