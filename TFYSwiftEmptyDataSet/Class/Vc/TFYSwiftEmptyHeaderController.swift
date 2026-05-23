@@ -40,7 +40,7 @@ final class TFYSwiftEmptyHeaderController: TFYSwiftBaseController {
     private func applyTableHeader() {
         if headerEnabled {
             let width = tableView.bounds.width > 0 ? tableView.bounds.width : UIScreen.main.bounds.width
-            let header = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 300))
+            let header = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 222))
             header.backgroundColor = .systemRed
             let label = UILabel(frame: header.bounds)
             label.text = "tableHeaderView\n（空态显示在此下方）"
