@@ -1,6 +1,6 @@
 # TFYSwiftEmptyDataSet
 
-[![Platform](https://img.shields.io/badge/platform-iOS%2015%2B-blue.svg?style=flat)](https://developer.apple.com/iphone/)
+[![Platform](https://img.shields.io/badge/platform-iOS%2016%2B-blue.svg?style=flat)](https://developer.apple.com/iphone/)
 [![Language](https://img.shields.io/badge/language-Swift-brightgreen.svg?style=flat)](https://developer.apple.com/swift)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](LICENSE)
 
@@ -18,20 +18,20 @@
 - **强制显示** `emptyDataSetShouldBeForcedToDisplay`
 - 滚动/点击权限、淡入动画、生命周期回调
 - 深色模式语义色（`EmptyDataSetContent`）
-- 最低 **iOS 15+**
+- 最低 **iOS 16+**
 
 ## 要求
 
-- iOS 15.0+
+- iOS 16.0+
 - Swift 5.0+
-- Xcode 14.0+
+- Xcode 14.0+（推荐 Xcode 15+）
 
 ## 安装
 
 ### CocoaPods
 
 ```ruby
-pod 'TFYSwiftEmptyDataSetKit', '~> 2.1.4'
+pod 'TFYSwiftEmptyDataSetKit', '~> 2.2.0'
 ```
 
 ### 源码
